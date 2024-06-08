@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Timetable Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffccff, #cc99ff);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            width: 300px;
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label, input, button {
+            margin: 10px 0;
+        }
+        input[type="range"] {
+            width: 100%;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .animation {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-size: 2em;
+            color: rgba(255, 255, 255, 0.8);
+            animation: fadeInOut 3s infinite;
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        .branch {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            margin: 5px;
+        }
+        .dog {
+            position: absolute;
+            width: 64px; /* Width of one frame */
+            height: 64px; /* Height of one frame */
+            background: url('/static/dog-sprite.png') no-repeat;
+            background-size: 384px 64px; /* Width of all frames together (64px * 6 frames) */
+            animation: run 1s steps(6) infinite, move 10s linear infinite;
+        }
+        @keyframes run {
+            0% { background-position: 0; }
+            100% { background-position: -384px; } /* 6 frames * 64px */
+        }
+        @keyframes move {
+            0% { left: -64px; }
+            100% { left: 100%; }
+        }
+        .dog-row {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            height: 64px;
+            margin: 10px 0;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="animation" style="top: 5%;">You can do it!</div>
+    <div class="animation" style="top: 15%; animation-delay: 1s;">Wake up and smash it!</div>
+    <div class="animation" style="top: 25%; animation-delay: 2s;">Keep pushing forward!</div>
+    
+    <!-- Dog Rows Above the Timetable -->
+    <div class="dog-row">
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+    </div>
+    <div class="dog-row">
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+    </div>
+    <div class="dog-row">
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+    </div>
+
+    <div class="container">
+        <h1>Timetable Generator</h1>
+        <form method="post">
+            <label for="hours_per_day">Hours per day:</label>
+            <input type="range" id="hours_per_day" name="hours_per_day" min="1" max="24" value="8" oninput="this.nextElementSibling.value = this.value">
+            <output>8</output> hours<br><br>
+            
+            <div id="class-container">
+                <div>
+                    <label for="class_name">Activity:</label>
+                    <input type="text" name="class_name"><br>
+                    <label for="class_duration">Duration (hours):</label>
+                    <input type="number" name="class_duration" min="1"><br><br>
+                </div>
+            </div>
+            <button type="button" onclick="addClass()">Add Another Activity</button><br><br>
+            <input type="submit" value="Generate Timetable">
+        </form>
+    </div>
+
+    <!-- Dog Rows Below the Timetable -->
+    <div class="dog-row">
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+    </div>
+    <div class="dog-row">
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+        <div class="dog"></div>
+    </div>
+
+    <script>
+        let branchCounter = 0;
+        const branchSpacing = 100;
+
+        function addClass() {
+            const container = document.getElementById('class-container');
+            const newClass = document.createElement('div');
+            newClass.innerHTML = `
+                <label for="class_name">Activity:</label>
+                <input type="text" name="class_name"><br>
+                <label for="class_duration">Duration (hours):</label>
+                <input type="number" name="class_duration" min="1"><br><br>
+            `;
+            container.appendChild(newClass);
+
+            const activity = container.querySelectorAll('div')[branchCounter];
+            const activityName = activity.querySelector('input[name="class_name"]').value;
+            const activityDuration = activity.querySelector('input[name="class_duration"]').value;
+
+            const branch = document.createElement('div');
+            branch.className = 'branch';
+            branch.style.top = `${container.getBoundingClientRect().top + branchSpacing * branchCounter}px`;
+            branch.style.left = `${container.getBoundingClientRect().right + 20}px`;
+            branch.innerText = `Activity: ${activityName}, Duration: ${activityDuration} hours`;
+            document.body.appendChild(branch);
+
+            branchCounter++;
+        }
+    </script>
+</body>
+</html>
