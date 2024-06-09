@@ -1,10 +1,30 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Timetable</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffccff, #cc99ff);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            z-index: 1;
+            width: 80%;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -14,186 +34,60 @@
             padding: 8px;
             text-align: center;
         }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+        .animation {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-size: 2em;
+            color: rgba(255, 255, 255, 0.8);
+            animation: fadeInOut 3s infinite;
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
-    <h1>Weekly Timetable</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Time</th>
-                
-                <th>Monday</th>
-                
-                <th>Tuesday</th>
-                
-                <th>Wednesday</th>
-                
-                <th>Thursday</th>
-                
-                <th>Friday</th>
-                
-                <th>Saturday</th>
-                
-                <th>Sunday</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-            
-            <tr>
-                <td>1:00 - 2:00</td>
-                
-                <td>Machine Learning Job Interviews </td>
-                
-                <td>Machine Learning Job Interviews </td>
-                
-                <td>Meeting with Brooks Paige</td>
-                
-                <td>Free</td>
-                
-                <td>Machine Learning Job Interviews </td>
-                
-                <td>MSc Project Thesis Work</td>
-                
-                <td>Machine Learning Job Interviews </td>
-                
-            </tr>
-            
-            <tr>
-                <td>2:00 - 3:00</td>
-                
-                <td>Free</td>
-                
-                <td>LeetCode</td>
-                
-                <td>Free</td>
-                
-                <td>Free</td>
-                
-                <td>Free</td>
-                
-                <td>Free</td>
-                
-                <td>Machine Learning Job Interviews </td>
-                
-            </tr>
-            
-            <tr>
-                <td>3:00 - 4:00</td>
-                
-                <td>Free</td>
-                
-                <td>Machine Learning Job Interviews </td>
-                
-                <td>LeetCode</td>
-                
-                <td>MSc Project Thesis Work</td>
-                
-                <td>Free</td>
-                
-                <td>Free</td>
-                
-                <td>Free</td>
-                
-            </tr>
-            
-            <tr>
-                <td>4:00 - 5:00</td>
-                
-                <td>MSc Project Thesis Work</td>
-                
-                <td>MSc Project Thesis Work</td>
-                
-                <td>Free</td>
-                
-                <td>Free</td>
-                
-                <td>Swimming</td>
-                
-                <td>Swimming</td>
-                
-                <td>Free</td>
-                
-            </tr>
-            
-            <tr>
-                <td>5:00 - 6:00</td>
-                
-                <td>Free</td>
-                
-                <td>LeetCode</td>
-                
-                <td>MSc Project Thesis Work</td>
-                
-                <td>Free</td>
-                
-                <td>Free</td>
-                
-                <td>MSc Project Thesis Work</td>
-                
-                <td>Free</td>
-                
-            </tr>
-            
-            <tr>
-                <td>6:00 - 7:00</td>
-                
-                <td>LeetCode</td>
-                
-                <td>Free</td>
-                
-                <td>MSc Project Thesis Work</td>
-                
-                <td>Free</td>
-                
-                <td>LeetCode</td>
-                
-                <td>Swimming</td>
-                
-                <td>Free</td>
-                
-            </tr>
-            
-            <tr>
-                <td>7:00 - 8:00</td>
-                
-                <td>Free</td>
-                
-                <td>Free</td>
-                
-                <td>LeetCode</td>
-                
-                <td>Free</td>
-                
-                <td>Meeting with Ignotalabs.AI</td>
-                
-                <td>MSc Project Thesis Work</td>
-                
-                <td>Swimming</td>
-                
-            </tr>
-            
-            <tr>
-                <td>8:00 - 9:00</td>
-                
-                <td>Free</td>
-                
-                <td>Free</td>
-                
-                <td>Free</td>
-                
-                <td>Machine Learning Job Interviews </td>
-                
-                <td>Meeting with Ignotalabs.AI</td>
-                
-                <td>Meeting with Brooks Paige</td>
-                
-                <td>Meeting with Ignotalabs.AI</td>
-                
-            </tr>
-            
-        </tbody>
-    </table>
+    <div class="animation" style="top: 20%;">You can do it!</div>
+    <div class="animation" style="top: 40%; animation-delay: 1s;">Wake up and smash it!</div>
+    <div class="animation" style="top: 60%; animation-delay: 2s;">Keep pushing forward!</div>
+    <div class="container">
+        <h1>Weekly Timetable</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    {% for day in days %}
+                    <th>{{ day }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for hour in range(hours_per_day) %}
+                <tr>
+                    <td>{{ hour + 1 }}:00 - {{ hour + 2 }}:00</td>
+                    {% for day in days %}
+                    <td>{{ timetable[day][hour] or "Free" }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/schedule_generator/">Back to Input</a>
+    </div>
 </body>
 </html>
