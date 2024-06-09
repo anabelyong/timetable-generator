@@ -166,9 +166,6 @@
     </div>
 
     <script>
-        let branchCounter = 0;
-        const branchSpacing = 100;
-
         function addClass() {
             const container = document.getElementById('class-container');
             const newClass = document.createElement('div');
@@ -179,19 +176,6 @@
                 <input type="number" name="class_duration" min="1"><br><br>
             `;
             container.appendChild(newClass);
-
-            const activity = container.querySelectorAll('div')[branchCounter];
-            const activityName = activity.querySelector('input[name="class_name"]').value;
-            const activityDuration = activity.querySelector('input[name="class_duration"]').value;
-
-            const branch = document.createElement('div');
-            branch.className = 'branch';
-            branch.style.top = `${container.getBoundingClientRect().top + branchSpacing * branchCounter}px`;
-            branch.style.left = `${container.getBoundingClientRect().right + 20}px`;
-            branch.innerText = `Activity: ${activityName}, Duration: ${activityDuration} hours`;
-            document.body.appendChild(branch);
-
-            branchCounter++;
         }
     </script>
 </body>
